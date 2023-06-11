@@ -1,0 +1,8 @@
+.tilt {
+  background: linear-gradient(90deg, #aeaef6 0%, #68b2c5 80%);
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+}
