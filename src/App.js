@@ -5,19 +5,22 @@ import { ImageLink } from "./components/ImageLink/ImageLink";
 import { Rank } from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
 import { useState } from "react";
+import { FaceRecognition } from "./components/FaceRecognition/FaceRecognition";
 
 function App() {
   const [input, setInput] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   const onInputChange = (event) => {
-    console.log(event.target.value);
+    setInput(event.target.value);
   };
 
-  const onSubmit = (event) => {
-    console.log("click");
+  const onSubmit = () => {
+    setImageUrl(input);
 
     // URL of image to use. Change this to your image.
-    const IMAGE_URL = "https://samples.clarifai.com/metro-north.jpg";
+    // const IMAGE_URL = "https://samples.clarifai.com/metro-north.jpg";
+    const IMAGE_URL = input;
 
     const raw = JSON.stringify({
       user_app_id: {
@@ -39,7 +42,7 @@ function App() {
       method: "POST",
       headers: {
         Accept: "application/json",
-        Authorization: "Key " + "6ee94d09e09e4254a440f10b9f58d8de",
+        Authorization: "Key 6ee94d09e09e4254a440f10b9f58d8de",
       },
       body: raw,
     };
@@ -53,7 +56,9 @@ function App() {
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) => console.log(result))
+      .then((result) =>
+        console.log(result.outputs[0].data.regions[0].region_info.bounding_box)
+      )
       .catch((error) => console.log("error", error));
   };
 
@@ -64,6 +69,7 @@ function App() {
       <Logo />
       <Rank />
       <ImageLink onInputChange={onInputChange} onSubmit={onSubmit} />
+      <FaceRecognition imageUrl={imageUrl} />
     </div>
   );
 }
