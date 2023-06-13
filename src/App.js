@@ -10,9 +10,50 @@ import { FaceRecognition } from "./components/FaceRecognition/FaceRecognition";
 function App() {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  // const [boundingBox, setBoundingBox] = useState({});
+  const [boundingBox, setBoundingBox] = useState([]);
 
   const onInputChange = (event) => {
     setInput(event.target.value);
+  };
+
+  const findFaceLocation = (data) => {
+    console.log(data.outputs[0].data.regions);
+    const clarifaiFace =
+      data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById("inputImage");
+    const width = Number(image.width);
+    const height = Number(image.height);
+
+    const multiple = data.outputs[0].data.regions.map((face) => {
+      return face.region_info.bounding_box;
+    });
+    // console.log(multiple);
+
+    const multiple2 = multiple.map((item) => {
+      return {
+        leftCol: item.left_col * width,
+        topRow: item.top_row * height,
+        rightCol: width - item.right_col * width,
+        bottomRow: height - item.bottom_row * height,
+      };
+    });
+    console.log(multiple2);
+
+    // return {
+    //   leftCol: clarifaiFace.left_col * width,
+    //   topRow: clarifaiFace.top_row * height,
+    //   rightCol: width - clarifaiFace.right_col * width,
+    //   bottomRow: height - clarifaiFace.bottom_row * height,
+    // };
+
+    return multiple2;
+  };
+
+  const displayFaceBox = (box) => {
+    console.log(box);
+
+    setBoundingBox(box);
   };
 
   const onSubmit = () => {
@@ -56,9 +97,7 @@ function App() {
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) =>
-        console.log(result.outputs[0].data.regions[0].region_info.bounding_box)
-      )
+      .then((response) => displayFaceBox(findFaceLocation(response)))
       .catch((error) => console.log("error", error));
   };
 
@@ -69,7 +108,7 @@ function App() {
       <Logo />
       <Rank />
       <ImageLink onInputChange={onInputChange} onSubmit={onSubmit} />
-      <FaceRecognition imageUrl={imageUrl} />
+      <FaceRecognition box={boundingBox} imageUrl={imageUrl} />
     </div>
   );
 }
