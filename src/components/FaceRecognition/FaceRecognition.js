@@ -20,9 +20,10 @@ export const FaceRecognition = ({ imageUrl, box }) => {
             left: box.leftCol,
           }}
         ></div> */}
-        {box.map((item) => {
+        {box.map((item, i) => {
           return (
             <div
+              key={i}
               className="bounding-box"
               style={{
                 top: item.topRow,

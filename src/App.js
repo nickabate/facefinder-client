@@ -6,12 +6,25 @@ import { Rank } from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
 import { useState } from "react";
 import { FaceRecognition } from "./components/FaceRecognition/FaceRecognition";
+import { SignIn } from "./components/SignIn/SignIn";
+import { Register } from "./components/Register/Register";
 
 function App() {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   // const [boundingBox, setBoundingBox] = useState({});
   const [boundingBox, setBoundingBox] = useState([]);
+  const [route, setRoute] = useState("signin");
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  const onRouteChange = (route) => {
+    if (route === "signout") {
+      setIsSignedIn(false);
+    } else if (route === "home") {
+      setIsSignedIn(true);
+    }
+    setRoute(route);
+  };
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -19,8 +32,8 @@ function App() {
 
   const findFaceLocation = (data) => {
     console.log(data.outputs[0].data.regions);
-    const clarifaiFace =
-      data.outputs[0].data.regions[0].region_info.bounding_box;
+    // const clarifaiFace =
+    //   data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById("inputImage");
     const width = Number(image.width);
     const height = Number(image.height);
@@ -104,11 +117,19 @@ function App() {
   return (
     <div className="App">
       <ParticlesBg bg={true} type="cobweb" />
-      <Navigation />
+      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
       <Logo />
-      <Rank />
-      <ImageLink onInputChange={onInputChange} onSubmit={onSubmit} />
-      <FaceRecognition box={boundingBox} imageUrl={imageUrl} />
+      {route === "home" ? (
+        <>
+          <Rank />
+          <ImageLink onInputChange={onInputChange} onSubmit={onSubmit} />
+          <FaceRecognition box={boundingBox} imageUrl={imageUrl} />
+        </>
+      ) : route === "signin" ? (
+        <SignIn onRouteChange={onRouteChange} />
+      ) : (
+        <Register onRouteChange={onRouteChange} />
+      )}
     </div>
   );
 }
