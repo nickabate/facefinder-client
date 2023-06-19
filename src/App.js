@@ -4,7 +4,7 @@ import { Logo } from "./components/Logo/Logo";
 import { ImageLink } from "./components/ImageLink/ImageLink";
 import { Rank } from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaceRecognition } from "./components/FaceRecognition/FaceRecognition";
 import { SignIn } from "./components/SignIn/SignIn";
 import { Register } from "./components/Register/Register";
@@ -12,10 +12,19 @@ import { Register } from "./components/Register/Register";
 function App() {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  // const [boundingBox, setBoundingBox] = useState({});
   const [boundingBox, setBoundingBox] = useState([]);
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
+
+  const pageMount = () => {
+    fetch("http://localhost:8080")
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
+
+  useEffect(() => {
+    pageMount();
+  }, []);
 
   const onRouteChange = (route) => {
     if (route === "signout") {
