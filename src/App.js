@@ -15,16 +15,23 @@ function App() {
   const [boundingBox, setBoundingBox] = useState([]);
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, setUser] = useState({
+    id: "",
+    name: "",
+    email: "",
+    entries: 0,
+    joined: "",
+  });
 
-  const pageMount = () => {
-    fetch("http://localhost:8080")
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+  const loadUser = (data) => {
+    setUser({
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined,
+    });
   };
-
-  useEffect(() => {
-    pageMount();
-  }, []);
 
   const onRouteChange = (route) => {
     if (route === "signout") {
@@ -137,7 +144,7 @@ function App() {
       ) : route === "signin" ? (
         <SignIn onRouteChange={onRouteChange} />
       ) : (
-        <Register onRouteChange={onRouteChange} />
+        <Register loadUser={loadUser} onRouteChange={onRouteChange} />
       )}
     </div>
   );
