@@ -4,7 +4,7 @@ import { Logo } from "./components/Logo/Logo";
 import { ImageLink } from "./components/ImageLink/ImageLink";
 import { Rank } from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaceRecognition } from "./components/FaceRecognition/FaceRecognition";
 import { SignIn } from "./components/SignIn/SignIn";
 import { Register } from "./components/Register/Register";
@@ -126,7 +126,22 @@ function App() {
       requestOptions
     )
       .then((response) => response.json())
-      .then((response) => displayFaceBox(findFaceLocation(response)))
+      .then((response) => {
+        if (response) {
+          fetch("http://localhost:8080/image", {
+            method: "put",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: user.id,
+            }),
+          })
+            .then((response) => response.json())
+            .then((count) => setUser({ ...user, entries: count }));
+        }
+        displayFaceBox(findFaceLocation(response));
+      })
+
+      //.then((count) => console.log(count)) //setUser({ entries: count })
       .catch((error) => console.log("error", error));
   };
 
@@ -137,7 +152,7 @@ function App() {
       <Logo />
       {route === "home" ? (
         <>
-          <Rank />
+          <Rank user={user} />
           <ImageLink onInputChange={onInputChange} onSubmit={onSubmit} />
           <FaceRecognition box={boundingBox} imageUrl={imageUrl} />
         </>
