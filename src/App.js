@@ -9,19 +9,21 @@ import { FaceRecognition } from "./components/FaceRecognition/FaceRecognition";
 import { SignIn } from "./components/SignIn/SignIn";
 import { Register } from "./components/Register/Register";
 
+const initialUserState = {
+  id: "",
+  name: "",
+  email: "",
+  entries: 0,
+  joined: "",
+};
+
 function App() {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [boundingBox, setBoundingBox] = useState([]);
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [user, setUser] = useState({
-    id: "",
-    name: "",
-    email: "",
-    entries: 0,
-    joined: "",
-  });
+  const [user, setUser] = useState(initialUserState);
 
   const loadUser = (data) => {
     setUser({
@@ -36,6 +38,9 @@ function App() {
   const onRouteChange = (route) => {
     if (route === "signout") {
       setIsSignedIn(false);
+      setUser(initialUserState);
+      setImageUrl("");
+      setBoundingBox([]);
     } else if (route === "home") {
       setIsSignedIn(true);
     }
@@ -136,7 +141,8 @@ function App() {
             }),
           })
             .then((response) => response.json())
-            .then((count) => setUser({ ...user, entries: count }));
+            .then((count) => setUser({ ...user, entries: count }))
+            .catch((err) => console.log(err));
         }
         displayFaceBox(findFaceLocation(response));
       })
