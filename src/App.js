@@ -52,7 +52,7 @@ function App() {
   };
 
   const findFaceLocation = (data) => {
-    console.log(data.outputs[0].data.regions);
+    // console.log(data.outputs[0].data.regions);
     // const clarifaiFace =
     //   data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById("inputImage");
@@ -72,7 +72,7 @@ function App() {
         bottomRow: height - item.bottom_row * height,
       };
     });
-    console.log(multiple2);
+    // console.log(multiple2);
 
     // return {
     //   leftCol: clarifaiFace.left_col * width,
@@ -85,7 +85,7 @@ function App() {
   };
 
   const displayFaceBox = (box) => {
-    console.log(box);
+    // console.log(box);
 
     setBoundingBox(box);
   };
@@ -95,43 +95,52 @@ function App() {
 
     // URL of image to use. Change this to your image.
     // const IMAGE_URL = "https://samples.clarifai.com/metro-north.jpg";
-    const IMAGE_URL = input;
+    // const IMAGE_URL = input;
 
-    const raw = JSON.stringify({
-      user_app_id: {
-        user_id: "clarifai",
-        app_id: "main",
-      },
-      inputs: [
-        {
-          data: {
-            image: {
-              url: IMAGE_URL,
-            },
-          },
-        },
-      ],
-    });
+    // const raw = JSON.stringify({
+    //   user_app_id: {
+    //     user_id: "clarifai",
+    //     app_id: "main",
+    //   },
+    //   inputs: [
+    //     {
+    //       data: {
+    //         image: {
+    //           url: IMAGE_URL,
+    //         },
+    //       },
+    //     },
+    //   ],
+    // });
 
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        Authorization: "Key 6ee94d09e09e4254a440f10b9f58d8de",
-      },
-      body: raw,
-    };
+    // const requestOptions = {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     Authorization: "Key 6ee94d09e09e4254a440f10b9f58d8de",
+    //   },
+    //   body: raw,
+    // };
 
-    // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
-    // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
-    // this will default to the latest version_id
+    // // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
+    // // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
+    // // this will default to the latest version_id
 
-    fetch(
-      `https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs`,
-      requestOptions
-    )
+    // fetch(
+    //   `https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs`,
+    //   requestOptions
+    // )
+    //   .then((response) => response.json())
+    fetch("http://localhost:8080/imageurl", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        input: input,
+      }),
+    })
       .then((response) => response.json())
       .then((response) => {
+        // console.log(response);
         if (response) {
           fetch("http://localhost:8080/image", {
             method: "put",
