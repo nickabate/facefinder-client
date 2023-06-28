@@ -157,7 +157,7 @@ function App() {
           <FaceRecognition box={boundingBox} imageUrl={imageUrl} />
         </>
       ) : route === "signin" ? (
-        <SignIn onRouteChange={onRouteChange} />
+        <SignIn loadUser={loadUser} onRouteChange={onRouteChange} />
       ) : (
         <Register loadUser={loadUser} onRouteChange={onRouteChange} />
       )}
