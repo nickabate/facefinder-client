@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const BASEAPI_URL = process.env.REACT_APP_BASEAPI_URL;
+
 export const Register = ({ onRouteChange, loadUser }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +20,7 @@ export const Register = ({ onRouteChange, loadUser }) => {
   };
 
   const onSubmitRegister = () => {
-    fetch("http://localhost:8080/register", {
+    fetch(`${BASEAPI_URL}/register`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

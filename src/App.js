@@ -9,6 +9,8 @@ import { FaceRecognition } from "./components/FaceRecognition/FaceRecognition";
 import { SignIn } from "./components/SignIn/SignIn";
 import { Register } from "./components/Register/Register";
 
+const BASEAPI_URL = process.env.REACT_APP_BASEAPI_URL;
+
 const initialUserState = {
   id: "",
   name: "",
@@ -52,9 +54,6 @@ function App() {
   };
 
   const findFaceLocation = (data) => {
-    // console.log(data.outputs[0].data.regions);
-    // const clarifaiFace =
-    //   data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById("inputImage");
     const width = Number(image.width);
     const height = Number(image.height);
@@ -62,7 +61,6 @@ function App() {
     const multiple = data.outputs[0].data.regions.map((face) => {
       return face.region_info.bounding_box;
     });
-    // console.log(multiple);
 
     const multiple2 = multiple.map((item) => {
       return {
@@ -72,66 +70,18 @@ function App() {
         bottomRow: height - item.bottom_row * height,
       };
     });
-    // console.log(multiple2);
-
-    // return {
-    //   leftCol: clarifaiFace.left_col * width,
-    //   topRow: clarifaiFace.top_row * height,
-    //   rightCol: width - clarifaiFace.right_col * width,
-    //   bottomRow: height - clarifaiFace.bottom_row * height,
-    // };
 
     return multiple2;
   };
 
   const displayFaceBox = (box) => {
-    // console.log(box);
-
     setBoundingBox(box);
   };
 
   const onSubmit = () => {
     setImageUrl(input);
 
-    // URL of image to use. Change this to your image.
-    // const IMAGE_URL = "https://samples.clarifai.com/metro-north.jpg";
-    // const IMAGE_URL = input;
-
-    // const raw = JSON.stringify({
-    //   user_app_id: {
-    //     user_id: "clarifai",
-    //     app_id: "main",
-    //   },
-    //   inputs: [
-    //     {
-    //       data: {
-    //         image: {
-    //           url: IMAGE_URL,
-    //         },
-    //       },
-    //     },
-    //   ],
-    // });
-
-    // const requestOptions = {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     Authorization: "Key 6ee94d09e09e4254a440f10b9f58d8de",
-    //   },
-    //   body: raw,
-    // };
-
-    // // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
-    // // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
-    // // this will default to the latest version_id
-
-    // fetch(
-    //   `https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs`,
-    //   requestOptions
-    // )
-    //   .then((response) => response.json())
-    fetch("http://localhost:8080/imageurl", {
+    fetch(`${BASEAPI_URL}/imageurl`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -140,9 +90,8 @@ function App() {
     })
       .then((response) => response.json())
       .then((response) => {
-        // console.log(response);
         if (response) {
-          fetch("http://localhost:8080/image", {
+          fetch(`${BASEAPI_URL}/image`, {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -156,7 +105,6 @@ function App() {
         displayFaceBox(findFaceLocation(response));
       })
 
-      //.then((count) => console.log(count)) //setUser({ entries: count })
       .catch((error) => console.log("error", error));
   };
 
