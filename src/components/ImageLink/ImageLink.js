@@ -2,10 +2,22 @@ import "./ImageLink.css";
 
 export const ImageLink = ({ onInputChange, onSubmit }) => {
   return (
-    <div>
-      <p className="f3">
-        FaceFinder will detect faces in your pictures. Give it a try!
-      </p>
+    <div className>
+      <div className="br3 shadow-5 form links pa2">
+        <p className="f3">
+          FaceFinder will detect faces in your pictures. Give it a try!
+        </p>
+        <p className="f4">
+          Here are some links to try. Copy and paste them into the detection
+          bar!
+        </p>
+        <p className="">
+          https://www.manicare.com.au/on/demandware.static/-/Library-Sites-mcp-shared-library/default/dw45e32389/manicare/blog/manicare-blog-face-shapes-inlaid-2.jpg
+        </p>
+        <p className="">
+          https://images.newscientist.com/wp-content/uploads/2022/02/14174128/PRI_223554170.jpg?width=900
+        </p>
+      </div>
       <div className="center">
         <div className="form center pa4 br3 shadow-5">
           <input

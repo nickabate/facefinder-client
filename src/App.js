@@ -91,11 +91,13 @@ function App() {
       .then((response) => response.json())
       .then((response) => {
         if (response) {
+          // console.log(response.outputs[0].data.regions.length);
           fetch(`${BASEAPI_URL}/image`, {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               id: user.id,
+              amount: response.outputs[0].data.regions.length,
             }),
           })
             .then((response) => response.json())
@@ -120,6 +122,8 @@ function App() {
           <FaceRecognition box={boundingBox} imageUrl={imageUrl} />
         </>
       ) : route === "signin" ? (
+        <SignIn loadUser={loadUser} onRouteChange={onRouteChange} />
+      ) : route === "signout" ? (
         <SignIn loadUser={loadUser} onRouteChange={onRouteChange} />
       ) : (
         <Register loadUser={loadUser} onRouteChange={onRouteChange} />
