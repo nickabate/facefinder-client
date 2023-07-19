@@ -5,7 +5,7 @@ export const ImageLink = ({ onInputChange, onSubmit }) => {
     <div className>
       <div className="br3 shadow-5 form links pa2">
         <p className="f3">
-          FaceFinder will detect faces in your pictures. Give it a try!
+          Face Finder will detect faces in your pictures. Give it a try!
         </p>
         <p className="f4">
           Here are some links to try. Copy and paste them into the detection
