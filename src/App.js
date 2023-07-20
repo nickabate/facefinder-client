@@ -91,7 +91,7 @@ function App() {
       .then((response) => response.json())
       .then((response) => {
         if (response) {
-          console.log(response.outputs[0].data.regions.length);
+          console.log(response);
           fetch(`${BASEAPI_URL}/image`, {
             method: "put",
             headers: { "Content-Type": "application/json" },
