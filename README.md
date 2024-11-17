@@ -7,11 +7,11 @@ Face Finder utilizes a machine learning API to detect faces in online images.
 
 ![Demo screenshot](./facefinder.png)
 
-This project was built as a part of pursuing my Complete Web Developer online certification with the Zero to Mastery Academy.
+This project was built as a part of pursuing my Complete Web Developer online certification with the [Zero to Mastery Academy](https://zerotomastery.io/).
 
 With this project, I learned how to use a third party Clarifai machine learning API. The functionality of the API usage interacts with a PostgreSQL database to store a user's interactions with the application. There is also users stored in the database with login functionality on the frontend.
 
-## Built with
+## Built With
 
 Some of the tech used in this app includes React on the frontend, with a backend utilizing Node, Express, Knex, PostgreSQL and a Clarifai machine learning API.
 
